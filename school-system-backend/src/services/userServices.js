@@ -1,6 +1,7 @@
 const models = require("../database/models");
 
 class UserServices{
+    //Buscar todos os Users
     async findAllUsers(){
         try {
             const response = await models.User.findAll();
@@ -10,15 +11,21 @@ class UserServices{
         }
     }
 
-    async findUserByEmail(email){
+    // Buscar um User por email
+    async findUserByEmail(userEmail){
         try {
-            const response = await models.User.findOne({ where: { email: email }});
+            const response = await models.User.findOne({
+                where: { 
+                    email: userEmail, 
+                },
+            });
             return response;   
         } catch (error) {
             throw new Error(error);
         }
     }
 
+    // Criar um novo User
     async createUser(dto){
         try {    
             const response = await models.User.create({

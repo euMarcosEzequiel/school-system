@@ -4,21 +4,21 @@ const secret = require("../database/config/secret.js");
 module.exports = async (req, res, next) => {
     const token = req.headers.authorization;
 
-    if(!token) return res.status(200).send({ message: "Access token not provided!" });
+    if(!token) return res.status(400).send({ message: "Access token not provided!" });
 
-    const [, accessToken] = token.split(" ");
+    const parts = token.split(" ");
+
+    if(parts.length !== 2 || parts[0] !== "Bearer") return res.status(401).send({ message: "Invalid token format!" });
+
+    const accessToken = parts[1];
 
     try {
         verify(accessToken, secret.secret);
 
-        const {id, email} = await decode(accessToken);
-
+        const { id } = await decode(accessToken);
         req.userId = id;
-        req.userEmail = email;
-
         return next();
-
     } catch (error) {
-        return res.status(200).send({ message: "Access denied!" });
+        return res.status(401).send({ message: "Access denied!" });
     }
 }

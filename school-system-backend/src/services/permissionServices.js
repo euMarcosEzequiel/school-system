@@ -1,6 +1,7 @@
 const models = require("../database/models");
 
 class PermissionServices{
+    // Buscar todas as Permissions 
     async findAllPermissions(){
         try {
             const response = await models.Permission.findAll();
@@ -10,15 +11,21 @@ class PermissionServices{
         }
     }
 
-    async findPermissionByName(name){
+    // Buscar uma Permission por nome
+    async findPermissionByName(permissionName){
         try {
-            const response = await models.Permission.findOne({ where: { name: name }});
+            const response = await models.Permission.findOne({ 
+                where: { 
+                    name: permissionName 
+                }
+            });
             return response;
         } catch (error) {
             throw new Error(error);
         }
     }
 
+    // Criar uma nova Permission
     async createPermission(dto){
         try {
             const response = await models.Permission.create({

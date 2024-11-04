@@ -1,12 +1,14 @@
 const { Router } = require("express");
 const UserControllers = require("../controllers/userControllers.js");
 const auth = require("../middleware/auth.js");
+const roles = require("../middleware/roles.js");
+const permissions = require("../middleware/permissions.js");
 
-const router = Router();
-router.use(auth);
+const userRoutes = Router();
+userRoutes.use(auth);
 
-router
+userRoutes
     .get("/user", UserControllers.findAllUsers)
-    .post("/user", UserControllers.createUser)
+    .post("/user", roles(["admin"]), UserControllers.createUser)
 
-module.exports = router;
+module.exports = userRoutes;

@@ -2,7 +2,7 @@
   "name": "school-system-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.js",  
   "scripts": {
     "start": "nodemon server.js"
   },

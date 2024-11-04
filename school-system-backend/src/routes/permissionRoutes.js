@@ -1,10 +1,13 @@
 const { Router } = require("express");
 const PermissionControllers = require("../controllers/permissionController.js");
+const auth = require("../middleware/auth.js");
+const roles = require("../middleware/roles.js");
 
-const router = Router();
+const permissionRoutes = Router();
+permissionRoutes.use(auth);
 
-router
+permissionRoutes
     .get("/permission", PermissionControllers.findAllPermissions)
-    .post("/permission", PermissionControllers.createPermission)
+    .post("/permission", roles(["admin"]), PermissionControllers.createPermission)
 
-module.exports = router;
+module.exports = permissionRoutes;

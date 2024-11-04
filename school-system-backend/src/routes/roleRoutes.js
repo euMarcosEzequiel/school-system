@@ -1,10 +1,13 @@
 const { Router } = require("express");
 const RoleControllers = require("../controllers/roleControllers.js");
+const auth = require("../middleware/auth.js");
+const roles = require("../middleware/roles.js");
 
-const router = Router();
+const roleRoutes = Router();
+roleRoutes.use(auth);
 
-router
+roleRoutes
     .get("/role", RoleControllers.findAllRoles)
-    .post("/role", RoleControllers.createRole)
+    .post("/role", roles(["admin"]), RoleControllers.createRole)
 
-module.exports = router;
+module.exports = roleRoutes;
